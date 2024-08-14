@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
-mongoose.connect(`${process.env.DB_URL}/payments-db`);
+mongoose.connect(`${process.env.DB_URL}/payment_app`);
 
 export const UserSchema = new mongoose.Schema({
     username: {
@@ -14,23 +14,25 @@ export const UserSchema = new mongoose.Schema({
         minLength: 3,
         maxLength: 20,
     },
-    first_name: {
-        type: true,
+    firstName: {
+        type: String,
         maxLength: 30,
         trim: true,
         required: true,
     },
-    last_name: {
-        type: true,
+    lastName: {
+        type: String,
         maxLength: 30,
         trim: true,
         default: null,
     },
     password: {
-        type: string,
+        type: String,
         minLength: 6,
         required: true,
     },
 });
 
-export const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
+
+export default User;
