@@ -1,5 +1,5 @@
 {
-  "name": "paytm-backend",
+  "name": "money-mate-backend",
   "version": "1.0.0",
   "description": "Transactions app",
   "main": "index.js",

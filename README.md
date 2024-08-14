@@ -1,1 +1,1 @@
-# PayTm
+# MoneyMate App
