@@ -41,3 +41,21 @@ export const signinInputValidation = (req, res, next) => {
     }
     next();
 };
+
+const updateDataBodySchema = zod.Schema(
+    zod.object({
+        firstName: zod.string().optional(),
+        lastName: zod.string().optional(),
+        password: zod.string().min(6).optional(),
+    })
+);
+
+export const updateDataValidator = (req, res, next) => {
+    const updateBody = updateDataBodySchema.safeParse(req.body);
+    if (!updateBody.success) {
+        return res.status(411).json({
+            msg: "password length should be atleast 6, couldn't update data",
+        });
+    }
+    next();
+};

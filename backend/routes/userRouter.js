@@ -5,11 +5,13 @@ import { JWT_SECRET } from "../config.js";
 import {
     signupInputValidation,
     signinInputValidation,
+    updateDataValidator,
 } from "../middlewares/inputValidator.js";
 import {
     userSignupValidation,
     userSigninValidation,
 } from "../middlewares/userValidator.js";
+import { authTokenChecker } from "../middlewares/authTokenCheck.js";
 
 const router = express.Router();
 
@@ -58,5 +60,19 @@ router.post(
         }
     }
 );
+
+router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
+    try {
+        await User.updateOne(req.body, { id: req.userId });
+    } catch (err) {
+        res.status(403).json({
+            msg: "Something is wrong while data update",
+            error: err,
+        });
+    }
+    res.json({
+        msg: "Details updated successfully",
+    });
+});
 
 export default router;
