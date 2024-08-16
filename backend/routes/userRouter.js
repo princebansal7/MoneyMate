@@ -63,7 +63,8 @@ router.post(
 
 router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
     try {
-        await User.updateOne(req.body, { id: req.userId });
+        // console.log(req.body);
+        await User.updateOne({ _id: req.userId }, { $set: req.body });
     } catch (err) {
         res.status(403).json({
             msg: "Something is wrong while data update",

@@ -42,13 +42,11 @@ export const signinInputValidation = (req, res, next) => {
     next();
 };
 
-const updateDataBodySchema = zod.Schema(
-    zod.object({
-        firstName: zod.string().optional(),
-        lastName: zod.string().optional(),
-        password: zod.string().min(6).optional(),
-    })
-);
+const updateDataBodySchema = zod.object({
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
+    password: zod.string().min(6).optional(),
+});
 
 export const updateDataValidator = (req, res, next) => {
     const updateBody = updateDataBodySchema.safeParse(req.body);
