@@ -76,4 +76,28 @@ router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
     });
 });
 
+// to filter users with their first or last name
+// /api/v1/user/bulk?filter=prince
+router.get("/bulk", authTokenChecker, async (req, res, next) => {
+    const filter = req.query.filter || "";
+    try {
+        const users = await User.find({
+            $or: [
+                { firstName: { $regex: filter, $options: "i" } },
+                { lastName: { $regex: filter, $options: "i" } },
+            ],
+        });
+        res.json({
+            usersArr: users.map(user => ({
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                _id: user._id,
+            })),
+        });
+    } catch (err) {
+        res.json({ msg: err });
+    }
+});
+
 export default router;
