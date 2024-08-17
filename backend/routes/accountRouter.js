@@ -19,6 +19,8 @@ router.get("/balance", authTokenChecker, async (req, res) => {
     }
 });
 
+/*
+
 // Transaction router [Important]
 
 router.post("/transaction", authTokenChecker, async (req, res) => {
@@ -59,6 +61,70 @@ router.post("/transaction", authTokenChecker, async (req, res) => {
     res.json({
         msg: "Transaction Successful",
     });
+});
+
+*/
+
+// Good way to Handle this is using Transactions:
+
+router.post("/transaction", authTokenChecker, async (req, res) => {
+    const currSession = await mongoose.startSession();
+    try {
+        currSession.startTransaction();
+
+        const { sendToUserId, amount } = req.body;
+        const userId = req.userId;
+        console.log(userId);
+
+        // Fetch the account userId within the transaction
+        const account = await Account.findOne({ userId }).session(currSession);
+        if (!account || account.balance < amount) {
+            await currSession.abortTransaction();
+            return res.status(400).json({
+                msg: "insufficient balance",
+            });
+        }
+
+        // Fetch the account userId within the transaction
+        const toAccount = await Account.findOne({
+            userId: sendToUserId,
+        }).session(currSession);
+        console.log(sendToUserId);
+
+        if (!toAccount) {
+            await currSession.abortTransaction();
+            return res.json({
+                msg: "user doesn't exist whom you want to send the amount",
+            });
+        }
+
+        // Performing Transaction
+        // - deducting amount of user to who sent the amount
+        await Account.updateOne(
+            { userId: userId },
+            { $inc: { balance: -amount.toFixed(2) } }
+        ).session(currSession);
+        // - increasing amount of user to whom amount is sent
+        await Account.updateOne(
+            { userId: sendToUserId },
+            { $inc: { balance: amount.toFixed(2) } }
+        ).session(currSession);
+
+        // Commit the transaction
+        await currSession.commitTransaction();
+
+        res.json({
+            msg: "Transaction Successful",
+        });
+    } catch (err) {
+        await currSession.abortTransaction();
+        res.json({
+            msg: "Transaction failure, Amount will be rollback",
+            Error: err,
+        });
+    } finally {
+        currSession.endSession();
+    }
 });
 
 export default router;
