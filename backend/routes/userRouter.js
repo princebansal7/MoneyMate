@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import User from "../db.js";
+import { User, Account } from "../db.js";
 import { JWT_SECRET } from "../config.js";
 import {
     signupInputValidation,
@@ -29,6 +29,13 @@ router.post(
                 password,
             });
             const userId = user._id;
+
+            // Assigning user a random balance at signup, upto 10000 with 2 decimal places
+            await Account.create({
+                userId,
+                balance: (Math.random() * 10000 + 1).toFixed(2),
+            });
+
             const token = jwt.sign({ userId }, JWT_SECRET);
             res.status(200).json({
                 msg: "User Created successfully",

@@ -1,4 +1,4 @@
-import User from "../db.js";
+import { User } from "../db.js";
 
 export const userSignupValidation = async (req, res, next) => {
     const { username } = req.body;

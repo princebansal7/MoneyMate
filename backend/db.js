@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 mongoose.connect(`${process.env.DB_URL}/payment_app`);
 
-export const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -33,6 +33,18 @@ export const UserSchema = new mongoose.Schema({
     },
 });
 
-const User = mongoose.model("User", UserSchema);
+const accountSchema = new mongoose.Schema({
+    userId: {
+        ref: "User",
+        type: mongoose.Schema.Types.ObjectId,
+    },
+    balance: {
+        type: Number,
+        required: true,
+    },
+});
 
-export default User;
+export const User = mongoose.model("User", UserSchema);
+export const Account = mongoose.model("Account", accountSchema);
+
+export default { User, Account };
