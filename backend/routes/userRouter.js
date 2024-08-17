@@ -85,7 +85,7 @@ router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
 
 // to filter users with their first or last name
 // /api/v1/user/bulk?filter=prince
-router.get("/bulk", authTokenChecker, async (req, res, next) => {
+router.get("/list-user", authTokenChecker, async (req, res) => {
     const filter = req.query.filter || "";
     try {
         const users = await User.find({
