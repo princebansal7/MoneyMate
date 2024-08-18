@@ -74,14 +74,15 @@ router.post("/transaction", authTokenChecker, async (req, res) => {
 
         const { sendToUserId, amount } = req.body;
         const userId = req.userId;
-        console.log(userId);
+
+        // console.log(userId);
 
         // Fetch the account userId within the transaction
         const account = await Account.findOne({ userId }).session(currSession);
         if (!account || account.balance < amount) {
             await currSession.abortTransaction();
             return res.status(400).json({
-                msg: "insufficient balance",
+                msg: "insufficient balance or wrong account",
             });
         }
 
@@ -89,7 +90,8 @@ router.post("/transaction", authTokenChecker, async (req, res) => {
         const toAccount = await Account.findOne({
             userId: sendToUserId,
         }).session(currSession);
-        console.log(sendToUserId);
+
+        // console.log(sendToUserId);
 
         if (!toAccount) {
             await currSession.abortTransaction();
@@ -99,11 +101,13 @@ router.post("/transaction", authTokenChecker, async (req, res) => {
         }
 
         // Performing Transaction
+
         // - deducting amount of user to who sent the amount
         await Account.updateOne(
             { userId: userId },
             { $inc: { balance: -amount.toFixed(2) } }
         ).session(currSession);
+
         // - increasing amount of user to whom amount is sent
         await Account.updateOne(
             { userId: sendToUserId },
