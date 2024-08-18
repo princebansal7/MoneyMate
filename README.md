@@ -1,4 +1,4 @@
 # MoneyMate App
 
 - Work in Progress
-- Backend completed | [Demo](https://youtu.be/gXCaP7zC54A)
+- Backend completed | [Demo](https://youtu.be/pTencsijI2Q)
