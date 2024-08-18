@@ -1,1 +1,3 @@
-export function TransferMoney() {}
+export function TransferMoney() {
+    return <>TransferMoney</>;
+}
