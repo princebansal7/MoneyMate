@@ -6,14 +6,26 @@ export const UserFilter = () => {
     // Replace with backend call
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState("");
+    const [debouncedFilter, setDebouncedFilter] = useState(filter);
 
-    // apply debouncing here
+    useEffect(() => {
+        // Apply debouncing
+        const handler = setTimeout(() => {
+            setDebouncedFilter(filter);
+        }, 500); // Adjust the delay (500ms) as needed
+
+        // Cleanup function to clear the timeout if the effect is re-triggered
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [filter]);
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem("authorization");
                 const response = await axios.get(
-                    `http://localhost:3000/api/v1/user/list-user?filter=${filter}`,
+                    `http://localhost:3000/api/v1/user/list-user?filter=${debouncedFilter}`,
                     {
                         headers: {
                             Authorization: `${token}`,
@@ -25,8 +37,11 @@ export const UserFilter = () => {
                 console.error("Error fetching users:", error);
             }
         };
-        fetchUsers();
-    }, [filter]);
+
+        if (debouncedFilter) {
+            fetchUsers();
+        }
+    }, [debouncedFilter]);
 
     return (
         <>

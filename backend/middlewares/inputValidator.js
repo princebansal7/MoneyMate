@@ -8,7 +8,7 @@ const userSignupInputSchema = zod.object({
 });
 
 export const signupInputValidation = (req, res, next) => {
-    console.log("signup input validator invoked");
+    // console.log("signup input validator invoked");
     const { firstName, lastName, username, password } = req.body;
     const isValidResponse = userSignupInputSchema.safeParse({
         username,
@@ -31,7 +31,7 @@ const userSigninInputSchema = zod.object({
 });
 
 export const signinInputValidation = (req, res, next) => {
-    console.log("signin input validator invoked");
+    // console.log("signin input validator invoked");
     const { username, password } = req.body;
     const isValidResponse = userSigninInputSchema.safeParse({
         username,
@@ -53,7 +53,7 @@ const updateDataBodySchema = zod.object({
 });
 
 export const updateDataValidator = (req, res, next) => {
-    console.log("update data input validator invoked");
+    // console.log("update data input validator invoked");
     const updateBody = updateDataBodySchema.safeParse(req.body);
     if (!updateBody.success) {
         return res.status(400).json({
