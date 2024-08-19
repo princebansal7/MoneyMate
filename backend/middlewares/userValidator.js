@@ -6,7 +6,7 @@ export const userSignupValidation = async (req, res, next) => {
     try {
         const userExist = await User.findOne({ username });
         if (userExist) {
-            return res.status(411).json({
+            return res.status(409).json({
                 message: "username already exists",
             });
         }

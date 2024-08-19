@@ -20,6 +20,7 @@ router.post(
     signupInputValidation,
     userSignupValidation,
     async (req, res) => {
+        console.log("signup ep invoked");
         const { firstName, lastName, username, password } = req.body;
         try {
             const user = await User.create({
@@ -39,7 +40,7 @@ router.post(
             const token = jwt.sign({ userId }, JWT_SECRET);
             res.status(200).json({
                 msg: "User Created successfully",
-                userId: token,
+                userId: `Bearer ${token}`,
             });
         } catch (err) {
             console.log(err);
@@ -59,7 +60,7 @@ router.post(
             const userId = user._id;
             const token = jwt.sign({ userId }, JWT_SECRET);
             res.status(200).json({
-                jwtToken: token,
+                jwtToken: `Bearer ${token}`,
             });
         } catch (err) {
             console.log(err);
@@ -87,12 +88,14 @@ router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
 // /api/v1/user/bulk?filter=prince
 router.get("/list-user", authTokenChecker, async (req, res) => {
     const filter = req.query.filter || "";
+    const currentUserId = req.userId; // Get the authenticated user's ID
     try {
         const users = await User.find({
             $or: [
                 { firstName: { $regex: filter, $options: "i" } },
                 { lastName: { $regex: filter, $options: "i" } },
             ],
+            _id: { $ne: currentUserId }, // Exclude the current user
         });
         res.json({
             usersArr: users.map(user => ({

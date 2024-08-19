@@ -8,6 +8,7 @@ const userSignupInputSchema = zod.object({
 });
 
 export const signupInputValidation = (req, res, next) => {
+    console.log("signup input validator invoked");
     const { firstName, lastName, username, password } = req.body;
     const isValidResponse = userSignupInputSchema.safeParse({
         username,
@@ -16,8 +17,9 @@ export const signupInputValidation = (req, res, next) => {
         password,
     });
     if (!isValidResponse.success) {
-        return res.status(411).json({
+        return res.status(400).json({
             message: "invalid input",
+            error: isValidResponse.error.errors,
         });
     }
     next();
@@ -29,14 +31,16 @@ const userSigninInputSchema = zod.object({
 });
 
 export const signinInputValidation = (req, res, next) => {
+    console.log("signin input validator invoked");
     const { username, password } = req.body;
     const isValidResponse = userSigninInputSchema.safeParse({
         username,
         password,
     });
     if (!isValidResponse.success) {
-        return res.status(411).json({
+        return res.status(400).json({
             message: "invalid input",
+            error: isValidResponse.error.errors,
         });
     }
     next();
@@ -49,10 +53,12 @@ const updateDataBodySchema = zod.object({
 });
 
 export const updateDataValidator = (req, res, next) => {
+    console.log("update data input validator invoked");
     const updateBody = updateDataBodySchema.safeParse(req.body);
     if (!updateBody.success) {
-        return res.status(411).json({
+        return res.status(400).json({
             msg: "password length should be atleast 6, couldn't update data",
+            error: updateBody.error.errors,
         });
     }
     next();
