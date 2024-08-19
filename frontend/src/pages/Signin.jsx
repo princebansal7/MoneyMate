@@ -32,7 +32,7 @@ export function Signin() {
                 <div className="mb-2">
                     <Button
                         onClick={async () => {
-                            console.log("signin button clicked");
+                            // console.log("signin button clicked");
                             const response = await axios.post(
                                 "http://localhost:3000/api/v1/user/signin",
                                 { username, password }

@@ -105,13 +105,13 @@ router.post("/transaction", authTokenChecker, async (req, res) => {
         // - deducting amount of user to who sent the amount
         await Account.updateOne(
             { userId: userId },
-            { $inc: { balance: -amount.toFixed(2) } }
+            { $inc: { balance: -parseFloat(amount).toFixed(2) } }
         ).session(currSession);
 
-        // - increasing amount of user to whom amount is sent
+        // - increasing amount in the recipient's account
         await Account.updateOne(
             { userId: sendToUserId },
-            { $inc: { balance: amount.toFixed(2) } }
+            { $inc: { balance: parseFloat(amount).toFixed(2) } }
         ).session(currSession);
 
         // Commit the transaction
