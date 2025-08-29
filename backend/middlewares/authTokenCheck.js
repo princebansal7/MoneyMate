@@ -6,7 +6,7 @@ export const authTokenChecker = (req, res, next) => {
     console.log(authorization);
 
     if (!authorization || !authorization.startsWith("Bearer ")) {
-        res.status(401).send("invalid user");
+        return res.status(401).send("invalid user");
     }
     const token = authorization.split(" ")[1];
     try {
@@ -14,14 +14,14 @@ export const authTokenChecker = (req, res, next) => {
         if (decoded.userId) {
             req.userId = decoded.userId;
             // console.log(req.userId);
-            next();
+            return next();
         } else {
-            res.status(403).json({
+            return res.status(403).json({
                 msg: "wrong user",
             });
         }
     } catch (err) {
-        res.status(403).json({
+        return res.status(403).json({
             msg: "wrong user",
             error: err,
         });

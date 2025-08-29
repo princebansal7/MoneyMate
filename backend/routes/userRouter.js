@@ -40,7 +40,7 @@ router.post(
             const token = jwt.sign({ userId }, JWT_SECRET);
             res.status(200).json({
                 msg: "User Created successfully",
-                userId: `Bearer ${token}`,
+                token: token,
             });
         } catch (err) {
             console.log(err);
@@ -60,7 +60,7 @@ router.post(
             const userId = user._id;
             const token = jwt.sign({ userId }, JWT_SECRET);
             res.status(200).json({
-                jwtToken: `Bearer ${token}`,
+                token: token,
             });
         } catch (err) {
             console.log(err);
@@ -86,6 +86,7 @@ router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
 
 // to filter users with their first or last name
 // /api/v1/user/bulk?filter=prince
+
 router.get("/list-user", authTokenChecker, async (req, res) => {
     const filter = req.query.filter || "";
     const currentUserId = req.userId; // Get the authenticated user's ID

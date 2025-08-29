@@ -1,4 +1,4 @@
-export function InputBox({ field, placeholder, type, onChange }) {
+export function InputBox({ field, placeholder, type, onChange, autocomplete }) {
     return (
         <div>
             <div className="text-sm font-medium text-left py-2 mt-1">
@@ -9,6 +9,7 @@ export function InputBox({ field, placeholder, type, onChange }) {
                 type={type}
                 placeholder={placeholder}
                 onChange={onChange}
+                autoComplete={autocomplete}
             ></input>
         </div>
     );

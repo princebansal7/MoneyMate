@@ -1,7 +1,7 @@
 export function Heading({ label }) {
     return (
-        <div>
-            <h1 className="pt-6 font-bold text-4xl">{label}</h1>
-        </div>
+        <h1 className="mt-2 mb-2 font-extrabold text-5xl text-center text-gray-900 drop-shadow-sm">
+            {label}
+        </h1>
     );
 }

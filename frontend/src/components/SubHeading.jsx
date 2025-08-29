@@ -1,9 +1,7 @@
 export function SubHeading({ label }) {
     return (
-        <div>
-            <h5 className="pt-1 pb-4 px-4 font-normal text-slate-400 text-sm">
-                {label}
-            </h5>
-        </div>
+        <h5 className="mb-6 px-4 font-medium text-slate-500 text-lg text-center">
+            {label}
+        </h5>
     );
 }

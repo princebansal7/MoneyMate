@@ -19,52 +19,56 @@ export function Signup() {
             <Card>
                 <Heading label="Sign Up" />
                 <SubHeading label="Enter below details to create a new account" />
-                <InputBox
-                    onChange={e => setFirstName(e.target.value)}
-                    field="First name"
-                    placeholder="Prince"
-                    type="text"
-                />
-                <InputBox
-                    onChange={e => setLastName(e.target.value)}
-                    field="Last name"
-                    placeholder="Bansal"
-                    type="text"
-                />
-                <InputBox
-                    onChange={e => setUsername(e.target.value)}
-                    field="Username"
-                    placeholder="username / email"
-                    type="text"
-                />
-                <InputBox
-                    onChange={e => setPassword(e.target.value)}
-                    field="Password"
-                    placeholder="********"
-                    type="password"
-                />
-                <div className="mb-2">
-                    <Button
-                        onClick={async () => {
-                            // console.log("signup button clicked");
-                            const response = await axios.post(
-                                "http://localhost:3000/api/v1/user/signup",
-                                {
-                                    firstName,
-                                    lastName,
-                                    username,
-                                    password,
-                                }
-                            );
-                            localStorage.setItem(
-                                "authorization",
-                                response.data.userId
-                            );
-                            navigate("/dashboard");
-                        }}
-                        label="Sign up"
+                <form
+                    onSubmit={async e => {
+                        e.preventDefault();
+                        const response = await axios.post(
+                            "http://localhost:3000/api/v1/user/signup",
+                            {
+                                firstName,
+                                lastName,
+                                username,
+                                password,
+                            }
+                        );
+                        console.log(
+                            "local storage token:",
+                            response.data.token
+                        );
+                        localStorage.setItem("token", response.data.token);
+                        navigate("/dashboard");
+                    }}
+                >
+                    <InputBox
+                        onChange={e => setFirstName(e.target.value)}
+                        field="First name"
+                        placeholder="Prince"
+                        type="text"
                     />
-                </div>
+                    <InputBox
+                        onChange={e => setLastName(e.target.value)}
+                        field="Last name"
+                        placeholder="Bansal"
+                        type="text"
+                    />
+                    <InputBox
+                        onChange={e => setUsername(e.target.value)}
+                        field="Username"
+                        placeholder="username / email"
+                        type="text"
+                        autocomplete="username"
+                    />
+                    <InputBox
+                        onChange={e => setPassword(e.target.value)}
+                        field="Password"
+                        placeholder="********"
+                        type="password"
+                        autocomplete="new-password"
+                    />
+                    <div className="mb-2">
+                        <Button type="submit">Sign Up</Button>
+                    </div>
+                </form>
                 <div className="py-2">
                     <BottomNote
                         label="Already registered?"

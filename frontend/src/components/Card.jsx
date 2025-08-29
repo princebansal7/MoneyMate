@@ -1,13 +1,9 @@
 export function Card({ children }) {
     return (
-        <>
-            <div className="flex bg-slate-300 h-screen justify-center">
-                <div className="flex flex-col justify-center ">
-                    <div className="rounded-lg bg-white w-80 text-center p-2 h-max px-4 shadow-lg shadow-stone-600">
-                        {children}
-                    </div>
-                </div>
+        <div className="flex items-center justify-center min-h-screen bg-slate-200">
+            <div className="rounded-2xl bg-white w-full max-w-md text-center p-8 shadow-2xl shadow-stone-400 mx-2">
+                {children}
             </div>
-        </>
+        </div>
     );
 }

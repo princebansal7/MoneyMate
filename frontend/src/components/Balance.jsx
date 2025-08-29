@@ -6,18 +6,18 @@ export const Balance = () => {
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                const token = localStorage.getItem("authorization");
+                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     "http://localhost:3000/api/v1/account/balance",
                     {
                         headers: {
-                            Authorization: `${token}`,
+                            Authorization: `Bearer ${token}`,
                         },
                     }
                 );
                 setBalance(response.data.balance);
             } catch (error) {
-                console.error("Error fetching users:", error);
+                console.error("Error fetching balance:", error);
             }
         };
         fetchBalance();

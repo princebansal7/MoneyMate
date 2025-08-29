@@ -17,35 +17,35 @@ export function Signin() {
             <Card>
                 <Heading label="Sign In" />
                 <SubHeading label="Enter below details to access your account" />
-                <InputBox
-                    onChange={e => setUsername(e.target.value)}
-                    field="Username"
-                    placeholder="princebansal_"
-                    type="text"
-                />
-                <InputBox
-                    onChange={e => setPassword(e.target.value)}
-                    field="Password"
-                    placeholder="********"
-                    type="password"
-                />
-                <div className="mb-2">
-                    <Button
-                        onClick={async () => {
-                            // console.log("signin button clicked");
-                            const response = await axios.post(
-                                "http://localhost:3000/api/v1/user/signin",
-                                { username, password }
-                            );
-                            localStorage.setItem(
-                                "authorization",
-                                response.data.jwtToken
-                            );
-                            navigate("/dashboard");
-                        }}
-                        label="Sign In"
+                <form
+                    onSubmit={async e => {
+                        e.preventDefault();
+                        const response = await axios.post(
+                            "http://localhost:3000/api/v1/user/signin",
+                            { username, password }
+                        );
+                        localStorage.setItem("token", response.data.token);
+                        navigate("/dashboard");
+                    }}
+                >
+                    <InputBox
+                        onChange={e => setUsername(e.target.value)}
+                        field="Username"
+                        placeholder="princebansal_"
+                        type="text"
+                        autocomplete="username"
                     />
-                </div>
+                    <InputBox
+                        onChange={e => setPassword(e.target.value)}
+                        field="Password"
+                        placeholder="********"
+                        type="password"
+                        autocomplete="current-password"
+                    />
+                    <div className="mb-2">
+                        <Button type="submit">Sign In</Button>
+                    </div>
+                </form>
                 <div className="mt-1">
                     <BottomNote
                         label="Forgot password?"
