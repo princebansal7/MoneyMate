@@ -9,4 +9,4 @@
 #### To Do
 
 - [ ] add another BE endpoint to make sure if user is already signed in, can't directly go to signin, signup route
-- [ ] Dashboard user details in TopBar
+- [x] Dashboard user details in TopBar
