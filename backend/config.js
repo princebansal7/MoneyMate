@@ -1,1 +1,1 @@
-export const JWT_SECRET = "whothehellwasthat";
+export const JWT_SECRET = "localjwtsecretpasswordtoverify"; // keep it secret

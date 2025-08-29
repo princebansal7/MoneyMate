@@ -50,10 +50,9 @@ export function TransferMoney() {
                                 { sendToUserId: id, amount },
                                 {
                                     headers: {
-                                        Authorization:
-                                            localStorage.getItem(
-                                                "authorization"
-                                            ),
+                                        Authorization: `Bearer ${localStorage.getItem(
+                                            "token"
+                                        )}`,
                                     },
                                 }
                             );

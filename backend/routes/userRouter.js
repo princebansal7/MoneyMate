@@ -69,6 +69,19 @@ router.post(
     }
 );
 
+// Get current user info
+router.get("/me", authTokenChecker, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select(
+            "firstName lastName"
+        );
+        if (!user) return res.status(404).json({ msg: "User not found" });
+        res.json({ user });
+    } catch (err) {
+        res.status(500).json({ msg: "Server error", error: err });
+    }
+});
+
 router.put("/", authTokenChecker, updateDataValidator, async (req, res) => {
     try {
         // console.log(req.body);

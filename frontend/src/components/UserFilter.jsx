@@ -23,12 +23,12 @@ export const UserFilter = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const token = localStorage.getItem("authorization");
+                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `http://localhost:3000/api/v1/user/list-user?filter=${debouncedFilter}`,
                     {
                         headers: {
-                            Authorization: `${token}`,
+                            Authorization: `Bearer ${token}`,
                         },
                     }
                 );
