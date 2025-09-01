@@ -24,23 +24,20 @@ export const UserFilter = () => {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get(
-                    `http://localhost:3000/api/v1/user/list-user?filter=${debouncedFilter}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const url = debouncedFilter
+                    ? `http://localhost:3000/api/v1/user/list-user?filter=${debouncedFilter}`
+                    : `http://localhost:3000/api/v1/user/list-user`;
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 setUsers(response.data.usersArr);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         };
-
-        if (debouncedFilter) {
-            fetchUsers();
-        }
+        fetchUsers();
     }, [debouncedFilter]);
 
     return (
